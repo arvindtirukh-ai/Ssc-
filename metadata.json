@@ -1,0 +1,6 @@
+{
+  "name": "SSC 10th Study Prep",
+  "description": "Complete offline Maharashtra State Board 10th Standard SSC study app with notes, 2017-2026 PYQs, formulas, and quizzes in English and Marathi medium.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
