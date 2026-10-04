@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSC 10th Study Master (Semi-English)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #f4f7fe;
+      --card-bg: #ffffff;
+      --primary-color: #3b82f6;
+      --primary-hover: #1d4ed8;
+      --text-main: #1e293b;
+      --text-sub: #64748b;
+      --accent-color: #0d9488;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 40px; }
+
+    header {
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      color: white;
+      padding: 24px 20px;
+      text-align: center;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    header h1 { font-size: 22px; font-weight: 700; }
+    header p { font-size: 13px; opacity: 0.9; margin-top: 4px; }
+
+    .container { max-width: 800px; margin: 20px auto; padding: 0 16px; }
+
+    /* Breadcrumb / Back Button */
+    .nav-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .back-btn {
+      background: var(--card-bg); border: none; padding: 8px 16px;
+      border-radius: 20px; font-weight: 600; color: var(--primary-color);
+      cursor: pointer; box-shadow: var(--shadow); display: none;
+    }
+
+    /* Subject Grid */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+    
+    .card {
+      background: var(--card-bg); padding: 20px 16px; border-radius: var(--radius);
+      text-align: center; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: var(--shadow); border: 1px solid #e2e8f0;
+    }
+
+    .card:active { transform: scale(0.97); }
+    .card-icon { font-size: 32px; margin-bottom: 8px; }
+    .card-title { font-size: 15px; font-weight: 600; color: var(--text-main); }
+    .card-sub { font-size: 11px; color: var(--text-sub); margin-top: 4px; }
+
+    /* Content View */
+    .section-box {
+      background: var(--card-bg); border-radius: var(--radius);
+      padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow);
+    }
+
+    .tab-menu { display: flex; gap: 10px; margin-bottom: 16px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+    .tab-btn {
+      background: none; border: none; padding: 8px 12px; font-weight: 600;
+      color: var(--text-sub); cursor: pointer; font-size: 14px;
+    }
+    .tab-btn.active { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); }
+
+    .pdf-link {
+      display: flex; justify-content: space-between; align-items: center;
+      background: #eff6ff; padding: 14px; border-radius: 12px; margin-bottom: 10px;
+      text-decoration: none; color: var(--primary-hover); font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1 id="header-title">SSC 10th Prep Master</h1>
+    <p id="header-sub">Semi-English Medium | Maharashtra State Board</p>
+  </header>
+
+  <div class="container">
+    <div class="nav-bar">
+      <button class="back-btn" id="back-btn" onclick="goBack()">← Back</button>
+      <span id="current-location" style="font-weight: 600; color: var(--text-sub);">Subjects</span>
+    </div>
+
+    <!-- Main View Area -->
+    <div id="main-view"></div>
+  </div>
+
+  <script>
+    const appData = {
+      subjects: [
+        { id: "math1", name: "Maths Part 1", icon: "📐", sub: "Algebra", type: "academic" },
+        { id: "math2", name: "Maths Part 2", icon: "📏", sub: "Geometry", type: "academic" },
+        { id: "sci1", name: "Science Part 1", icon: "⚡", sub: "Physics & Chemistry", type: "academic" },
+        { id: "sci2", name: "Science Part 2", icon: "🧬", sub: "Biology & Environment", type: "academic" },
+        { id: "hist", name: "History & Pol. Sci.", icon: "🏛️", sub: "Itihas & Rajyashastra", type: "academic" },
+        { id: "geo", name: "Geography", icon: "🌍", sub: "Bhugol", type: "academic" },
+        { id: "eng", name: "English", icon: "📖", sub: "Kumarbharati", type: "language" },
+        { id: "mar", name: "Marathi", icon: "✍️", sub: "Aksharbharati/Kumarbharati", type: "language" },
+        { id: "hin", name: "Hindi", icon: "📝", sub: "Lokbharati/Lokvani", type: "language" }
+      ],
+      chapters: {
+        math1: [
+          { id: 1, name: "Linear Equations in Two Variables", notes: "Complete Chapter Notes, Formulas & Step-by-Step Solved Practice Sets..." },
+          { id: 2, name: "Quadratic Equations", notes: "Standard form, Factorisation method, Formula method notes..." },
+          { id: 3, name: "Arithmetic Progression", notes: "Sequence, AP terms, nth term formula, Sum of n terms..." },
+          { id: 4, name: "Financial Planning", notes: "GST, Tax invoice, Shares, Mutual Funds detailed notes..." },
+          { id: 5, name: "Probability", notes: "Random experiment, Sample space, Events and Probability..." },
+          { id: 6, name: "Statistics", notes: "Mean, Median, Mode, Histogram, Pie diagram notes..." }
+        ],
+        sci1: [
+          { id: 1, name: "Gravitation", notes: "Kepler's laws, Newton's Universal Law, Free fall, Escape velocity..." },
+          { id: 2, name: "Periodic Classification of Elements", notes: "Doberiner, Newlands, Mendeleev & Modern Periodic Table..." }
+        ],
+        eng: [
+          { id: "grammar", name: "English Grammar Section", content: "Direct-Indirect Speech, Change the Voice, Tenses, Compound Sentences..." },
+          { id: "writing", name: "Writing Skills (उपयोजित लेखन)", content: "Letter Writing (Formal/Informal), Report Writing, Dialogue Writing, Speech..." },
+          { id: "imp", name: "IMP Board Questions", content: "Most repeated appreciation of poems and textual Q&A..." }
+        ],
+        mar: [
+          { id: "grammar", name: "मराठी व्याकरण", content: "वाक्यप्रकार, वाक्यरूपांतर, समास, शब्दसिद्धी, म्हणी व वाक्प्रचार..." },
+          { id: "writing", name: "उपयोजित लेखन", content: "पत्रलेखन, सारांश लेखन, जाहिरात लेखन, बातमी लेखन, कथालेखन, प्रसंगलेखन..." },
+          { id: "imp", name: "महत्त्वाचे प्रश्न (IMP Board Questions)", content: "कवितेचे रसग्रहण व पाठांचे महत्त्वाचे स्वमत प्रश्न..." }
+        ]
+      },
+      pyqs: [
+        { year: "March 2024 Board Question Paper", link: "#" },
+        { year: "July 2023 Board Question Paper", link: "#" },
+        { year: "March 2023 Board Question Paper", link: "#" }
+      ]
+    };
+
+    let currentSubject = null;
+
+    function renderSubjects() {
+      document.getElementById('back-btn').style.display = 'none';
+      document.getElementById('current-location').innerText = 'Select Subject';
+      const mainView = document.getElementById('main-view');
+      
+      let html = '<div class="grid">';
+      appData.subjects.forEach(sub => {
+        html += `
+          <div class="card" onclick="selectSubject('${sub.id}', '${sub.name}', '${sub.type}')">
+            <div class="card-icon">${sub.icon}</div>
+            <div class="card-title">${sub.name}</div>
+            <div class="card-sub">${sub.sub}</div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      mainView.innerHTML = html;
+    }
+
+    function selectSubject(subId, subName, subType) {
+      currentSubject = subId;
+      document.getElementById('back-btn').style.display = 'block';
+      document.getElementById('current-location').innerText = subName;
+      const mainView = document.getElementById('main-view');
+
+      const chapters = appData.chapters[subId] || [];
+
+      let html = `
+        <div class="tab-menu">
+          <button class="tab-btn active">Chapters / Sections</button>
+          <button class="tab-btn" onclick="alert('PYQ Papers PDF Section')">Board Question Papers (PDF)</button>
+        </div>
+        <div class="grid">
+      `;
+
+      if (chapters.length === 0) {
+        html += `<div class="section-box" style="grid-column: 1/-1;">Detail Chapter notes loading soon...</div>`;
+      } else {
+        chapters.forEach(ch => {
+          html += `
+            <div class="card" onclick="showChapterDetails('${subId}', '${ch.id}', '${ch.name}')">
+              <div class="card-icon">📚</div>
+              <div class="card-title">${ch.name}</div>
+              <div class="card-sub">Full Details & Notes</div>
+            </div>
+          `;
+        });
+      }
+
+      html += '</div>';
+      mainView.innerHTML = html;
+    }
+
+    function showChapterDetails(subId, chId, chName) {
+      const mainView = document.getElementById('main-view');
+      document.getElementById('current-location').innerText = chName;
+
+      const subChapters = appData.chapters[subId] || [];
+      const chData = subChapters.find(c => c.id == chId) || {};
+
+      mainView.innerHTML = `
+        <div class="section-box">
+          <h2>${chName}</h2>
+          <hr style="margin: 12px 0; border: none; border-top: 1px solid #e2e8f0;">
+          <p style="line-height: 1.6; color: #334155;">
+            ${chData.notes || chData.content || "Full detail explanation and notes for this chapter."}
+          </p>
+        </div>
+        <div class="section-box">
+          <h3>Board Question Papers (PYQ PDFs)</h3>
+          <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Direct Official Papers</p>
+          <a href="#" class="pdf-link">📄 March 2024 Question Paper PDF <span>Download</span></a>
+          <a href="#" class="pdf-link">📄 March 2023 Question Paper PDF <span>Download</span></a>
+        </div>
+      `;
+    }
+
+    function goBack() {
+      renderSubjects();
+    }
+
+    // Initialize
+    renderSubjects();
+  </script>
+</body>
+</html>
